@@ -1,0 +1,84 @@
+import React, { useState } from "react";
+import { MessageCircle, Send, Bot, Sparkles } from "lucide-react";
+
+export default function App() {
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([
+    {
+      role: "assistant",
+      text: "नमस्ते Boss! मैं SONY AI हूँ। आज मैं आपकी क्या मदद करूँ?"
+    }
+  ]);
+
+  function sendMessage() {
+    if (!message.trim()) return;
+
+    setMessages(prev => [
+      ...prev,
+      { role: "user", text: message }
+    ]);
+
+    setMessage("");
+  }
+
+  return (
+    <div className="min-h-screen bg-[#0b1020] text-white p-5">
+      <header className="flex items-center gap-3 mb-8">
+        <div className="bg-violet-600 p-3 rounded-2xl">
+          <Bot size={30} />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold">SONY AI</h1>
+          <p className="text-violet-300 text-sm">
+            Your Personal AI Assistant
+          </p>
+        </div>
+      </header>
+
+      <div className="bg-[#171e35] rounded-2xl p-5 mb-5">
+        <Sparkles className="text-violet-400 mb-2" />
+        <h2 className="text-xl font-bold">Welcome, Boss!</h2>
+        <p className="text-gray-400 mt-2">
+          Your Student & Personal Assistant
+        </p>
+      </div>
+
+      <div className="bg-[#171e35] rounded-2xl p-4">
+        <h2 className="font-bold flex items-center gap-2 mb-4">
+          <MessageCircle /> SONY AI Chat
+        </h2>
+
+        <div className="space-y-3 min-h-48 mb-4">
+          {messages.map((item, index) => (
+            <div
+              key={index}
+              className={`p-3 rounded-xl ${
+                item.role === "user"
+                  ? "bg-violet-700 ml-8"
+                  : "bg-[#252e49] mr-8"
+              }`}
+            >
+              {item.text}
+            </div>
+          ))}
+        </div>
+
+        <div className="flex gap-2">
+          <input
+            value={message}
+            onChange={e => setMessage(e.target.value)}
+            onKeyDown={e => e.key === "Enter" && sendMessage()}
+            placeholder="Boss, कुछ पूछिए..."
+            className="min-w-0 flex-1 bg-[#252e49] rounded-xl p-3 outline-none"
+          />
+          <button
+            onClick={sendMessage}
+            className="bg-violet-600 p-3 rounded-xl"
+          >
+            <Send />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
